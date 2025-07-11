@@ -1,9 +1,10 @@
+# streamlit_app.py (最上面)
 import streamlit as st
 import pandas as pd
 import datetime
 
-from app.utils import load_all, kin_lookup, date_to_maya_birthday
-
+# 同目錄匯入
+from utils import load_all, kin_lookup, date_to_maya_birthday
 
 def main():
     st.title("瑪雅印記查詢系統")
