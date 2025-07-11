@@ -1,18 +1,25 @@
-# app/streamlit_app.py
-
-import sys, os
-
-# 把 app/ 這個資料夾加入模組搜尋路徑
-# __file__ = .../app/streamlit_app.py
-APP_DIR = os.path.dirname(__file__)
-sys.path.insert(0, APP_DIR)
-
-import streamlit as st
-import pandas as pd
-import datetime
-
-# 現在就能直接同目錄匯入
-from utils import load_all, kin_lookup, date_to_maya_birthday
+--- app/streamlit_app.py
++++ app/streamlit_app.py
+@@
+-import sys, os
+-
+-# 把 app/ 這個資料夾加入模組搜尋路徑
+-# __file__ = .../app/streamlit_app.py
+-APP_DIR = os.path.dirname(__file__)
+-sys.path.insert(0, APP_DIR)
+-
+-import streamlit as st
+-import pandas as pd
+-import datetime
+-
+-# 現在就能直接同目錄匯入
+-from utils import load_all, kin_lookup, date_to_maya_birthday
++import streamlit as st
++import pandas as pd
++import datetime
++
++# 以絕對路徑匯入套件
++from app.utils import load_all, kin_lookup, date_to_maya_birthday
 
 def main():
     st.title("瑪雅印記查詢系統")
