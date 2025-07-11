@@ -1,9 +1,17 @@
-# streamlit_app.py (最上面)
+# app/streamlit_app.py
+
+import sys, os
+
+# 把 app/ 這個資料夾加入模組搜尋路徑
+# __file__ = .../app/streamlit_app.py
+APP_DIR = os.path.dirname(__file__)
+sys.path.insert(0, APP_DIR)
+
 import streamlit as st
 import pandas as pd
 import datetime
 
-# 同目錄匯入
+# 現在就能直接同目錄匯入
 from utils import load_all, kin_lookup, date_to_maya_birthday
 
 def main():
