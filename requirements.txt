@@ -1,6 +1,5 @@
-streamlit
-pandas
-openpyxl
-xlrd
--e .
-streamlit
+streamlit>=1.20.0
+pandas>=1.3.0
+openpyxl>=3.0.0
+numpy>=1.21.0
+python-dateutil>=2.8.0
