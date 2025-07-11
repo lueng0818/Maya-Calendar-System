@@ -3,8 +3,9 @@ import streamlit as st
 
 import streamlit as st
 
-# 相對 import
-from .utils import load_all, kin_lookup, date_to_maya_birthday
+# 絕對 import
+from app.utils import load_all, kin_lookup, date_to_maya_birthday
+
 
 def main():
     st.title("瑪雅印記查詢系統")
