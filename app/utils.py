@@ -72,3 +72,61 @@ def date_to_maya_birthday(date: datetime, data: Dict[str, pd.DataFrame]) -> str:
     lookup = date.strftime('%m/%d').lstrip('0').replace('/0','/')
     row = key_df[key_df['國曆月日'] == lookup]
     return row['瑪雅生日'].values[0] if not row.empty else "無對應瑪雅生日"
+
+# utils.py 中新增
+
+# 1) 年度 → 流年印記對照表（示例只列 2000～2005，可擴充到完整區間）
+YEAR_TO_NUM = {
+    2000: 152, 2001: 257, 2002: 102, 2003: 207,
+    2004: 52,  2005: 157, # … 其他年份 …
+}
+
+# 2) 月份累計天數（非閏年）
+MONTH_OFFSET = {
+    1:   0,
+    2:  31,
+    3:  59,
+    4:  90,
+    5: 120,
+    6: 151,
+    7: 181,
+    8: 212,
+    9: 243,
+    10: 273,  # 注意：因為 9 月 30 天→243+30=273，之前示例表格末尾用了 13 for October but那是跨年用
+    11: 304,  # 273+31
+    12: 334,  # 304+30
+}
+
+# 3) 日 → 偏移（1→1, …, 29上→28, 29下→1）
+def day_offset(day: int, is_leap_29_low: bool=False) -> int:
+    # 如果需要處理農曆閏二月（29上、29下），這裡用 is_leap_29_low 標記下層29
+    if day == 29 and is_leap_29_low:
+        return 1
+    return day
+
+def birthdate_to_kin(year: int, month: int, day: int, is_leap_29_low: bool=False) -> int:
+    """
+    將西元年、月、日轉成瑪雅 KIN (1~260)：
+
+    - year: 4 位數西元年
+    - month: 1~12
+    - day: 1~31
+    - is_leap_29_low: 若輸入「29 下」請傳 True，否則傳 False
+    """
+    # 1) 取得年度數字
+    if year not in YEAR_TO_NUM:
+        raise ValueError(f"年份 {year} 不在可查範圍內")
+    y_num = YEAR_TO_NUM[year]
+
+    # 2) 取得月份偏移
+    if month not in MONTH_OFFSET:
+        raise ValueError(f"月份 {month} 不可接受")
+    m_off = MONTH_OFFSET[month]
+
+    # 3) 取得日期偏移
+    d_off = day_offset(day, is_leap_29_low)
+
+    # 4) 加總並對 260 取餘
+    kin = (y_num + m_off + d_off) % 260
+    return kin or 260
+
