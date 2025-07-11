@@ -1,5 +1,25 @@
 import streamlit as st
-from app.utils import load_all, kin_lookup, date_to_maya_birthday
+# app/streamlit_app.py
+
+import streamlit as st
+
+# 相對 import
+from .utils import load_all, kin_lookup, date_to_maya_birthday
+
+def main():
+    st.title("瑪雅印記查詢系統")
+    # 載入所有資料
+    data = load_all()
+    # 介面：輸入日期 → 查 KIN → 顯示結果
+    date = st.date_input("請選擇公曆日期")
+    maya_bday = date_to_maya_birthday(date)
+    kin = kin_lookup(maya_bday, data)
+    st.write(f"對應 KIN：{kin}")
+    # （依你的 utils.py 實作再顯示更多欄位）
+    # ...
+
+if __name__ == "__main__":
+    main()
 
 st.set_page_config(page_title="瑪雅印記查詢系統", layout="wide")
 st.title("🌟 瑪雅印記查詢系統")
